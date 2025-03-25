@@ -74,7 +74,7 @@ def validate_nexus_data(container: NexusDataContainer) -> bool:
 
 
 
-    # TODO validate data
+    # TODO validate shape in data confronting signal and axes
 
 
 
