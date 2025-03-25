@@ -7,7 +7,7 @@ from .classes.Data import Axis, Data
 from .logging_settings import logger
 
 
-def validate_nexus_data(container: NexusDataContainer) -> bool:
+def validate_nexus_data(nexus_container: NexusDataContainer) -> bool:
     '''
     Returns True if the NexusDataContainer can be saved without errors using saveNexus.
     Also print in log all the problems encountered.
@@ -48,28 +48,28 @@ def validate_nexus_data(container: NexusDataContainer) -> bool:
     #     errors.append(function(container))
 
     # ENTRY
-    valid = _no_none_in_instance(container, {}) and valid
+    valid = _no_none_in_instance(nexus_container, {}) and valid
 
     # BEAMS
-    for element in container.beams:
+    for element in nexus_container.beams:
         valid =  _no_none_in_instance(element, {}) and valid
-    valid = _all_elements_of_the_same_type('beams', container.beams, Beam) and valid
+    valid = _all_elements_of_the_same_type('beams', nexus_container.beams, Beam) and valid
     
     # DETECTORS
-    for element in container.detectors:
+    for element in nexus_container.detectors:
         valid = _no_none_in_instance(element, {}) and valid
-    valid = _all_elements_of_the_same_type('detectors', container.detectors, Detector) and valid
+    valid = _all_elements_of_the_same_type('detectors', nexus_container.detectors, Detector) and valid
 
     # SOURCES
-    for element in container.sources:
+    for element in nexus_container.sources:
         valid = _no_none_in_instance(element, {}) and valid
-    valid = _all_elements_of_the_same_type('sources', container.sources, Source) and valid
+    valid = _all_elements_of_the_same_type('sources', nexus_container.sources, Source) and valid
 
     # SAMPLE    
     valid = _no_none_in_instance(element, {}) and valid
 
     # DATA
-    valid = _no_none_in_instance(container.data, {}) and valid
+    valid = _no_none_in_instance(nexus_container.data, {}) and valid
 
 
 
@@ -81,8 +81,8 @@ def validate_nexus_data(container: NexusDataContainer) -> bool:
 
     
     # AXES
-    for element in container.data.axes:
+    for element in nexus_container.data.axes:
         valid = _no_none_in_instance(element, {'__data', '__units'}) and valid
-    valid = _all_elements_of_the_same_type('axes', container.data.axes, Axis) and valid
+    valid = _all_elements_of_the_same_type('axes', nexus_container.data.axes, Axis) and valid
 
     return valid
