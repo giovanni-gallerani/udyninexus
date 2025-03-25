@@ -4,17 +4,20 @@ from .Source import Source
 
 from typing import Optional, Literal
 
+# TODO specify with Optional which elements are actually optional
 
 class Beam:
     def __init__(self,
+            name: str = None,
             beam_type : Literal['pump', 'probe'] = None,
             parameter_reliability: Literal['measured', 'nominal'] = None,
             incident_wavelength: int = None,
             incident_wavelength_units: Literal['nm'] = None,
-            incident_polarization: Optional[int] = None,
+            incident_polarization: int = None,
             beam_polarization_type: Literal['linear', 'circular' ,'elliptically', 'unpolarized'] = None,
-            associated_source: Optional[Source] = None
+            associated_source: Source = None
         ):
+        self.name = name
         self.parameter_reliability = parameter_reliability
         self.incident_wavelength = incident_wavelength
         self.incident_wavelength_units = incident_wavelength_units
@@ -25,6 +28,7 @@ class Beam:
         
     
     # Getters and setters
+    name = create_typed_property('name', str)
     parameter_reliability = create_valued_property('parameter_reliability', ['measured', 'nominal'])
     incident_wavelength = create_typed_property('incident_wavelength', int)
     incident_wavelength_units = create_valued_property('incident_wavelength_units', ['nm']) # TODO decide what units are possible
