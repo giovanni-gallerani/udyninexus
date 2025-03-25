@@ -9,7 +9,7 @@ from typing import Optional, Literal
 class Beam:
     def __init__(self,
             name: str = None,
-            beam_type : Literal['pump', 'probe'] = None,
+            beam_type: Literal['pump', 'probe'] = None,
             parameter_reliability: Literal['measured', 'nominal'] = None,
             incident_wavelength: int = None,
             incident_wavelength_units: Literal['nm'] = None,
