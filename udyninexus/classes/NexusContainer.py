@@ -11,6 +11,9 @@ from datetime import datetime
 from pathlib import Path
 
 
+# TODO specify with Optional which elements are actually optional
+
+
 class NexusContainer:
     # Class attributes (shared across all istances)
     __definition = 'NXoptical_spectroscopy'
@@ -23,13 +26,13 @@ class NexusContainer:
             title: str,
             identifier_experiment: int,
             experiment_description: str,
-            beams: Optional[List[Beam]] = None,
-            detectors: Optional[List[Detector]] = None,
-            sources: Optional[List[Source]] = None,
+            beams: List[Beam] = None,
+            detectors: List[Detector] = None,
+            sources: List[Source] = None,
             sample: Sample = None,
             data: Data = None,
-            start_time: Optional[datetime] = None,
-            end_time: Optional[datetime] = None,
+            start_time: datetime = None,
+            end_time: datetime = None,
         ):
         self.title = title
         # for setting start_time and end_time is better to use set_start_time_now and set_end_time_now
