@@ -23,9 +23,9 @@ class NexusContainer:
     __experiment_sub_type='pump-probe' # can be 'time resolved', 'imaging', 'pump-probe'
 
     def __init__(self, 
-            title: str,
-            identifier_experiment: int,
-            experiment_description: str,
+            title: str = None,
+            identifier_experiment: int = None,
+            experiment_description: str = None,
             beams: List[Beam] = None,
             detectors: List[Detector] = None,
             sources: List[Source] = None,
