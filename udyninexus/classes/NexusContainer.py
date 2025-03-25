@@ -11,7 +11,7 @@ from datetime import datetime
 from pathlib import Path
 
 
-class NexusDataContainer:
+class NexusContainer:
     # Class attributes (shared across all istances)
     __definition = 'NXoptical_spectroscopy'
     __definition_URL = 'https://fairmat-nfdi.github.io/nexus_definitions/classes/contributed_definitions/NXoptical_spectroscopy.html#nxoptical-spectroscopy'

@@ -1,4 +1,4 @@
-from .classes.NexusDataContainer import NexusDataContainer
+from .classes.NexusContainer import NexusContainer
 from .classes.Beam import Beam
 from .classes.Detector import Detector
 from .classes.Source import Source

@@ -1,4 +1,4 @@
-from .classes.NexusDataContainer import NexusDataContainer
+from .classes.NexusContainer import NexusContainer
 from .classes.Beam import Beam
 from .classes.Detector import Detector
 from .classes.Source import Source
@@ -7,7 +7,7 @@ from .classes.Data import Axis, Data
 from .logging_settings import logger
 
 
-def validate_nexus_data(nexus_container: NexusDataContainer) -> bool:
+def validate_nexus_data(nexus_container: NexusContainer) -> bool:
     '''
     Returns True if the NexusDataContainer can be saved without errors using saveNexus.
     Also print in log all the problems encountered.
