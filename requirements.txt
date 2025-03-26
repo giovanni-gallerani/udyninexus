@@ -1,0 +1,3 @@
+nexusformat
+pathlib
+numpy
