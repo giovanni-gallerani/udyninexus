@@ -9,7 +9,7 @@ from typing import Optional, List
 
 class Axis:
     def __init__(self,
-            name: str,
+            name: str = None,
             data: Optional[List] = None,
             units: Optional[str] = None
         ):
