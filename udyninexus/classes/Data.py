@@ -4,8 +4,15 @@ from ..utils import create_typed_property, create_typed_property_for_list
 from typing import Optional, List
 
 
+# TODO specify with Optional which elements are actually optional
+
+
 class Axis:
-    def __init__(self, name: str, data: Optional[List] = None, units: Optional[str] = None):
+    def __init__(self,
+            name: str,
+            data: Optional[List] = None,
+            units: Optional[str] = None
+        ):
         self.name = name
         self.data = data
         self.units = units
@@ -17,7 +24,10 @@ class Axis:
 
 
 class Data:
-    def __init__(self, signal, axes: Optional[List[Axis]] = None):
+    def __init__(self,
+            signal = None,
+            axes: List[Axis] = None
+        ):
         self.signal = signal
         self.axes = axes
     

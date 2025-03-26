@@ -8,7 +8,6 @@ from .Data import Data
 
 from typing import Optional, List
 from datetime import datetime
-from pathlib import Path
 
 
 # TODO specify with Optional which elements are actually optional
