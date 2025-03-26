@@ -25,13 +25,19 @@ class Axis:
 
 class Data:
     def __init__(self,
+            signal_name: str = None,
             signal = None,
+            signal_units: str = None,
             axes: List[Axis] = None
         ):
+        self.signal_name = signal_name
         self.signal = signal
+        self.signal_units = signal_units
         self.axes = axes
     
     # Getters and setters
+    signal_name = create_typed_property('signal_name', str)
     signal = create_typed_property('signal', requires_shape=True)
+    signal_units = create_typed_property('signal_units', str)
     axes = create_typed_property_for_list('axes', Axis)
     # an integrity check that assures that the axis and the data are compatible is performed when the nexus file is created using saveNexus
