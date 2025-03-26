@@ -107,7 +107,7 @@ if __name__ == '__main__':
     nexusObj.data = data
 
     try:
-        udyninexus.write_nexus(nexusObj, 'output')
+        udyninexus.write_nexus(nexusObj, 'output_example')
     except ValueError as e:
         print('Invalid nexus_container')
         exit(1)
