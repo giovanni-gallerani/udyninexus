@@ -4,4 +4,5 @@ from .classes.Detector import Detector
 from .classes.Source import Source
 from .classes.Sample import Sample
 from .classes.Data import Axis, Data
-from .nexus_writer import write_nexus
+from .write_nexus import write_nexus
+from .exceptions import NexusSaveError, NexusValidationError
