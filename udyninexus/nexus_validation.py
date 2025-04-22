@@ -7,7 +7,7 @@ from .classes.Data import Axis, Data
 from .logging_settings import logger
 
 
-def validate_nexus_data(nexus_container: NexusContainer) -> bool:
+def validate_nexus_container(nexus_container: NexusContainer) -> bool:
     '''
     Returns True if the NexusDataContainer can be saved without errors using saveNexus.
     Also print in log all the problems encountered.
@@ -42,10 +42,6 @@ def validate_nexus_data(nexus_container: NexusContainer) -> bool:
                 return False
         return True
     
-    # errors = []
-    # validations = [_no_none_in_instance, _all_elements_of_the_same_type]
-    # for function in validations:
-    #     errors.append(function(container))
 
     # ENTRY
     valid = _no_none_in_instance(nexus_container, {}) and valid
