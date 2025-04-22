@@ -1,29 +1,28 @@
-# TODO create longname concatenating name and units for the axis
-# TODO add parameters for specifying compression
-# TODO create a naming convention for the files, could be experiment_ID + measurement_ID + file_ID (i would prefer it to be unique in the entire dataset)
-# once in the supervisor directory the supervisor saves the file in the path related to that experiment and measurement
-# then create a new entry in the file table
-# TODO create getter methods for definition, experiment type and subtype in NexusDataContainer, for now they are hardcoded
-# TODO understand the cause of the warning for many of the XN classes
+# Future developements
+# - Add parameters for specifying compression
+# - Create methods for editing definition in NexusDataContainer, for now it's hardcoded since the lab will only use an implementation of NXoptical_spectroscopy
 
 from .classes.NexusContainer import NexusContainer
-from .nexus_validation import validate_nexus_data
+from .nexus_validation import validate_nexus_container
 from .logging_settings import logger
+from .exceptions import NexusValidationError, NexusSaveError
 
 from nexusformat.nexus import *
-from os import makedirs
 from pathlib import Path
 
 
-def write_nexus(nexus_container: NexusContainer, output_dir: str = '.'):
+def write_nexus(nexus_container: NexusContainer, filename: str):
     '''
-    Save the data in the NexusDataContainer in a NeXus file inside the specified directory.\n
-    If no directory is specified, save the file into the current directory.
-    Saves the file only if the NexusDataContainer is valid, otherwise throw exception.
+    Save the data in the NexusDataContainer in a specified NeXus file.\n
+    If the specified path does not exist, this function creates it and save the file inside it.\n
+    
+    Raises:
+        NexusValidationError: throwed when NexusContainer object is not valid.
+        NexusSaveError: throwed when occours an error while trying to save the NeXus file.
     '''
-    if not validate_nexus_data(nexus_container):
-        logger.error(f'Invalid nexus_container, the NeXus file has not been created')
-        raise ValueError
+
+    if not validate_nexus_container(nexus_container):
+        raise NexusValidationError('Invalid NexusContainer, the NeXus file NeXus file cannot be created')
 
     root = NXroot()
 
@@ -86,19 +85,15 @@ def write_nexus(nexus_container: NexusContainer, output_dir: str = '.'):
     root['/entry/data'].set_default()
 
 
-    # Create the ouput directory if it does not already exists
-    output_dir_full_path = Path(output_dir).resolve()
+    filename_full_path = Path(filename).resolve()
+    directories = filename_full_path.parent
     try:
-        makedirs(output_dir_full_path, exist_ok=True)
-    except PermissionError:
-        logger.error(f"Permission denied: Unable to create '{output_dir_full_path}'.")
-        exit(1)
-    except Exception as e:
-        logger.error(f"An error occurred while creating {output_dir_full_path}: {e}")
-        exit(1)
-
+        directories.mkdir(parents=True, exist_ok=True)
+    except (PermissionError, FileExistsError, OSError, Exception) as e:
+        raise NexusSaveError(f"Failed to create directory '{directories}': {e}") from e
+    
     # Save the NeXus file
-    nexus_file_name = 'Udiny_test_file.nxs'
-    output_file_full_path = output_dir_full_path / nexus_file_name
-    root.save(output_file_full_path, 'w')
-    print(f'{output_file_full_path.name} saved in {output_dir_full_path}')
+    try:
+        root.save(filename_full_path)
+    except NeXusError as e:
+        raise NexusSaveError(e) from e
