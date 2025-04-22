@@ -1,14 +1,17 @@
 import udyninexus
 
+from pathlib import Path
 import numpy as np
 
-# NOTE
-# if you can't set everything in a certain moment you can put None, but remember to change it later with setters methods
-# otherwise you will get an error while trying to write the NeXus file
+# IMPORTANT NOTE
+# In order to give maximum flexibily is possible to not assign values to all the field from the start
+# but at nexus time creation all the required fields must have a value assigned to them.
 
 if __name__ == '__main__':
-    output_dir = 'supervisor_directory'
-    identifier_experiment = 1234567890 # TODO retrieved from the database.
+
+    # In production environment this ID is retrieved from the experiments database through an API.
+    # For more information about the APIs used in the lab see the work at: https://github.com/giovanni-gallerani/UdyniManagement
+    identifier_experiment = 1234567890
 
 
     # --- SOURCES ---
@@ -17,7 +20,8 @@ if __name__ == '__main__':
         type='UV Laser'
     )
 
-    # another way to do assign the values. NOTE that also this setters have validity check for types and values.
+    # Another way to assign values to objects attributes.
+    # NOTE that attributes of the object are not direcly accessed using dot notation, these are setters with validity check for types and values.
     source1 = udyninexus.Source()
     source1.name_in_nexus = 'LED_probe'
     source1.type='LED'
@@ -88,7 +92,7 @@ if __name__ == '__main__':
     nexusObj.set_start_time_now()
 
 
-    # --- DATA ACQUISITION LOOP (here the data of the signal is just a random matrix) ---
+    # --- DATA ACQUISITION LOOP (here the data of the signal is just a random matrix, in the lab data is obtained from the experimental station) ---
     rng = np.random.default_rng()
     delta_i = rng.uniform(low=0.0, high=100.0, size=(len(delay_time.data), len(wavelength.data)))
 
@@ -105,9 +109,13 @@ if __name__ == '__main__':
         axes=[delay_time, wavelength]
     )
     nexusObj.data = data
+    
 
+    filename = Path('output_example/Udiny_test_file.nxs')
     try:
-        udyninexus.write_nexus(nexusObj, 'output_example')
-    except ValueError as e:
-        print('Invalid nexus_container')
+        udyninexus.write_nexus(nexusObj, filename)
+    except (udyninexus.NexusValidationError, udyninexus.NexusSaveError) as e:
+        print(e)
         exit(1)
+    
+    print(f'{filename.name} saved in {filename.parent}')
