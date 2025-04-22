@@ -3,5 +3,5 @@ class NexusValidationError(Exception):
     pass
 
 class NexusSaveError(Exception):
-    """Raised when saving to file fails unexpectedly."""
+    """Raised by write_nexus when saving the NeXus file fails unexpectedly."""
     pass
