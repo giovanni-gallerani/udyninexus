@@ -77,7 +77,7 @@ if __name__ == '__main__':
 
     # --- CREATE THE AXES ---
     delay_time = udyninexus.Axis(
-        name='delay_tyme',
+        name='delay_time',
         data=range(9),
         units='ms'
     )
