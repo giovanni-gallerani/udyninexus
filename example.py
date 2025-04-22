@@ -111,7 +111,7 @@ if __name__ == '__main__':
     nexusObj.data = data
     
 
-    filename = Path('output_example/Udiny_test_file.nxs')
+    filename = Path('output_example/Udiny_test_file.nxs').resolve()
     try:
         udyninexus.write_nexus(nexusObj, filename)
     except (udyninexus.NexusValidationError, udyninexus.NexusSaveError) as e:
