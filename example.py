@@ -118,4 +118,4 @@ if __name__ == '__main__':
         print(e)
         exit(1)
     
-    print(f'{filename.name} saved in {filename.parent}')
+    print(f"'{filename.name}' saved in '{filename.parent}'")
