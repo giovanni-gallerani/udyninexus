@@ -13,6 +13,7 @@ class Axis:
         self.name = name
         self.data = data
         self.units = units
+        self.reference = reference
 
     # Getters and setters
     name = create_property_check_type('name', str)
