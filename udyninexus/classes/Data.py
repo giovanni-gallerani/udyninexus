@@ -25,7 +25,7 @@ class Axis:
 class Data:
     def __init__(self,
             signal_name: str = None,
-            signal_data: Any = None,
+            signal_data: Any = None, # it must be a data with a shape (multi dimensional array)
             signal_units: str = None,
             signal_reference: Instrument = None,
             axes: List[Axis] = None
@@ -42,4 +42,4 @@ class Data:
     signal_units = create_property_check_type('signal_units', str)
     signal_reference = create_property_check_isinstance('signal_reference', Instrument)
     axes = create_property_check_type_for_lists('axes', Axis)
-    # an integrity check that assures that the axis and the data are compatible is performed when the nexus file is created using saveNexus
+    # an integrity check that assures that the axis and the data are compatible is performed when NexusContainer is validated
