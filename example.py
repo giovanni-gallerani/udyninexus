@@ -85,9 +85,9 @@ if __name__ == '__main__':
     delay_time = udyninexus.Axis(
         name='delay_time',
         data=range(9),
-        units='ms'
+        units='ms',
     )
-    wavelength = udyninexus.Axis('wavelength', range(2068), 'ms')
+    wavelength = udyninexus.Axis('wavelength', range(2068), 'nm')
 
 
     # --- START MEASUREMENT ---
@@ -108,6 +108,7 @@ if __name__ == '__main__':
         signal_name='delta_i',
         signal_data=delta_i,
         signal_units='mOD',
+        signal_reference=detector0,
         axes=[delay_time, wavelength]
     )
     nexusObj.data = data
