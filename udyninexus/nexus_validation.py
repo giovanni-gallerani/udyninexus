@@ -25,26 +25,6 @@ def _get_invalid_none_attributes(instance_name: str, instance, allowed_none: set
         if value is None and attr not in allowed_none:
             errors.append(f"{instance_name}.{attr} cannot be None.")
     return errors
-    
-
-def _get_invalid_type_list_elements(list_name: str, elements: list, expected_type: type) -> list[str]:
-    """
-    Return a list of error messages for all elements in a list that are not exactly of the expected type.
-
-    Parameters:
-    - list_name (str): A name used to identify the list in the error messages.
-    - elements (list): The list of elements to check.
-    - expected_type (type): The exact expected type of each element (no subclassing allowed).
-
-    Returns:
-    - list[str]: A list of error messages for elements that are not of the expected type.
-        If all elements are valid, the list will be empty.
-    """
-    errors = []
-    for i, element in enumerate(elements):
-        if type(element) is not expected_type:
-            errors.append(f"{list_name}[{i}] is not of type {expected_type.__name__}")
-    return errors
 
 
 def _get_invalid_type_and_invalid_none_attributes_of_list_elements_(list_name: str, elements: list, expected_type: type, allowed_none: set) -> list[str]:
