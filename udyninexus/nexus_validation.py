@@ -1,4 +1,3 @@
-from .exceptions import NexusValidationError
 from .classes.NexusContainer import NexusContainer
 from .classes.Beam import Beam
 from .classes.Detector import Detector
