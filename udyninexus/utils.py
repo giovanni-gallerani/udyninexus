@@ -28,7 +28,7 @@ def get_shape(obj):
 
 
 def check_if_expected_instance(variable_name, value, expected_instance):
-    if isinstance(value, expected_instance):
+    if not isinstance(value, expected_instance):
         raise TypeError(f'Invalid type for {variable_name}: {value}. Must be an instance of {expected_instance.__name__}.')
     
 
