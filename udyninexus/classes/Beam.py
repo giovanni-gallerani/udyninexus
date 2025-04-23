@@ -11,7 +11,7 @@ class Beam(Instrument):
             beam_type: Literal['pump', 'probe'] = None,
             parameter_reliability: Literal['measured', 'nominal'] = None,
             incident_wavelength: int = None,
-            incident_wavelength_units: Literal['nm'] = None,
+            incident_wavelength_units: Literal['nm', 'um'] = None,
             incident_polarization: int = None,
             beam_polarization_type: Literal['linear', 'circular' ,'elliptically', 'unpolarized'] = None,
             associated_source: Source = None
@@ -29,7 +29,7 @@ class Beam(Instrument):
     # Getters and setters
     parameter_reliability = create_property_check_in_valid_values('parameter_reliability', ['measured', 'nominal'])
     incident_wavelength = create_property_check_type('incident_wavelength', int)
-    incident_wavelength_units = create_property_check_in_valid_values('incident_wavelength_units', ['nm']) # TODO decide what units are possible
+    incident_wavelength_units = create_property_check_in_valid_values('incident_wavelength_units', ['nm', 'um'])
     incident_polarization = create_property_check_type('incident_polarization', int)
     beam_polarization_type = create_property_check_in_valid_values('beam_polarization_type', ['linear', 'circular' ,'elliptically', 'unpolarized'])
     associated_source = create_property_check_type('associated_source', Source)
