@@ -2,7 +2,7 @@ from .Instrument import Instrument
 from ..utils import create_property_check_type, create_property_check_in_valid_values
 from .Source import Source
 
-from typing import Optional, Literal
+from typing import Literal
 
 
 class Beam(Instrument):

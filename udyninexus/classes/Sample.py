@@ -1,6 +1,5 @@
 from ..utils import create_property_check_type
 
-# TODO specify with Optional which elements are actually optional
 
 class Sample:
     def __init__(self,
