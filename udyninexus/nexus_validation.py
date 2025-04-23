@@ -83,7 +83,7 @@ def errors_in_nexus_container(nexus_container: NexusContainer) -> list[str]:
     errors.extend(_get_invalid_none_attributes('NexusContainer.data', nexus_container.data, {}))
 
     # AXES
-    errors.extend(_get_invalid_type_and_invalid_none_attributes_of_list_elements_('NexusContainer.data.axis', nexus_container.data.axes, Axis, {'data', 'units'}))
+    errors.extend(_get_invalid_type_and_invalid_none_attributes_of_list_elements_('NexusContainer.data.axis', nexus_container.data.axes, Axis, {'data', 'units', 'reference'}))
 
     # TODO validate shape in data confronting signal and axes
 
