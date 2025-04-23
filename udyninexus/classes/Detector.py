@@ -1,5 +1,5 @@
 from .Instrument import Instrument
-from ..utils import create_typed_property, create_valued_property
+from ..utils import create_property_check_type, create_property_check_in_valid_values
 
 from typing import Optional, Literal
 
@@ -17,7 +17,7 @@ class Detector(Instrument):
         
     
     # Getters and setters
-    detector_channel_type = create_valued_property('detector_channel_type', ['single-channel', 'multichannel'])
-    detector_type = create_valued_property('detector_type', ['CCD', 'photomultiplier', 'photodiode', 'avalanche-photodiode', 'streak camera', 'bolometer',
+    detector_channel_type = create_property_check_in_valid_values('detector_channel_type', ['single-channel', 'multichannel'])
+    detector_type = create_property_check_in_valid_values('detector_type', ['CCD', 'photomultiplier', 'photodiode', 'avalanche-photodiode', 'streak camera', 'bolometer',
                                                             'golay detectors', 'pyroelectric detector', 'deuterated triglycine sulphate', 'other'])
     

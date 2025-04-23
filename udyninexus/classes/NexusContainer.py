@@ -1,4 +1,4 @@
-from ..utils import create_typed_property, create_valued_property, create_typed_property_for_list, get_time_now
+from ..utils import create_property_check_type, create_property_check_in_valid_values, create_property_check_type_for_lists, get_time_now
 from .Beam import Beam
 from .Detector import Detector
 from .Source import Source
@@ -43,18 +43,18 @@ class NexusContainer:
     
 
     # Getters and setters
-    title = create_typed_property('title', str)
-    start_time = create_typed_property('start_time', datetime)
-    end_time = create_typed_property('end_time', datetime)
-    identifier_experiment = create_typed_property('identifier_experiment', int)
-    experiment_description = create_typed_property('experiment_description', str)
-    experiment_type = create_valued_property('experiment_type', ['photoluminescence', 'transmission spectroscopy', 'reflection spectroscopy'])
-    experiment_sub_type = create_valued_property('experiment_sub_type', ['time resolved', 'imaging', 'pump-probe'])
-    beams = create_typed_property_for_list('beams', Beam)
-    detectors = create_typed_property_for_list('detectors', Detector)
-    sources = create_typed_property_for_list('sources', Source)
-    samples = create_typed_property('sample', Sample)
-    data = create_typed_property('data', Data)
+    title = create_property_check_type('title', str)
+    start_time = create_property_check_type('start_time', datetime)
+    end_time = create_property_check_type('end_time', datetime)
+    identifier_experiment = create_property_check_type('identifier_experiment', int)
+    experiment_description = create_property_check_type('experiment_description', str)
+    experiment_type = create_property_check_in_valid_values('experiment_type', ['photoluminescence', 'transmission spectroscopy', 'reflection spectroscopy'])
+    experiment_sub_type = create_property_check_in_valid_values('experiment_sub_type', ['time resolved', 'imaging', 'pump-probe'])
+    beams = create_property_check_type_for_lists('beams', Beam)
+    detectors = create_property_check_type_for_lists('detectors', Detector)
+    sources = create_property_check_type_for_lists('sources', Source)
+    samples = create_property_check_type('sample', Sample)
+    data = create_property_check_type('data', Data)
     
 
     def set_start_time_now(self, timezone='Europe/Rome'):

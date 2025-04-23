@@ -1,5 +1,5 @@
 from .Instrument import Instrument
-from ..utils import create_typed_property, create_valued_property
+from ..utils import create_property_check_type, create_property_check_in_valid_values
 from .Source import Source
 
 from typing import Optional, Literal
@@ -27,10 +27,10 @@ class Beam(Instrument):
         
     
     # Getters and setters
-    parameter_reliability = create_valued_property('parameter_reliability', ['measured', 'nominal'])
-    incident_wavelength = create_typed_property('incident_wavelength', int)
-    incident_wavelength_units = create_valued_property('incident_wavelength_units', ['nm']) # TODO decide what units are possible
-    incident_polarization = create_typed_property('incident_polarization', int)
-    beam_polarization_type = create_valued_property('beam_polarization_type', ['linear', 'circular' ,'elliptically', 'unpolarized'])
-    associated_source = create_typed_property('associated_source', Source)
-    beam_type = create_valued_property('beam_type', ['pump', 'probe'])
+    parameter_reliability = create_property_check_in_valid_values('parameter_reliability', ['measured', 'nominal'])
+    incident_wavelength = create_property_check_type('incident_wavelength', int)
+    incident_wavelength_units = create_property_check_in_valid_values('incident_wavelength_units', ['nm']) # TODO decide what units are possible
+    incident_polarization = create_property_check_type('incident_polarization', int)
+    beam_polarization_type = create_property_check_in_valid_values('beam_polarization_type', ['linear', 'circular' ,'elliptically', 'unpolarized'])
+    associated_source = create_property_check_type('associated_source', Source)
+    beam_type = create_property_check_in_valid_values('beam_type', ['pump', 'probe'])

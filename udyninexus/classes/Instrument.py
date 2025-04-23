@@ -1,4 +1,4 @@
-from ..utils import create_typed_property
+from ..utils import create_property_check_type
 
 class Instrument:
     def __init__(self, 
@@ -7,4 +7,4 @@ class Instrument:
         self.name_in_nexus = name_in_nexus
 
     # Getters and setters
-    name_in_nexus = create_typed_property('name_in_nexus', str)
+    name_in_nexus = create_property_check_type('name_in_nexus', str)

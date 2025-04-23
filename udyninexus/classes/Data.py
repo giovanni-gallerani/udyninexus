@@ -1,32 +1,30 @@
-from ..utils import create_typed_property, create_typed_property_for_list
-
-
-from typing import Optional, List
-
-
-# TODO specify with Optional which elements are actually optional
+from ..utils import create_property_check_isinstance, create_property_check_type, create_property_check_type_for_lists
+from .Instrument import Instrument
+from typing import Optional, List, Any
 
 
 class Axis:
     def __init__(self,
             name: str = None,
             data: Optional[List] = None,
-            units: Optional[str] = None
+            units: Optional[str] = None,
+            reference: Optional[Instrument] = None,
         ):
         self.name = name
         self.data = data
         self.units = units
 
     # Getters and setters
-    name = create_typed_property('name', str)
-    data = create_typed_property('data', requires_shape=True)
-    units = create_typed_property('units', str)
+    name = create_property_check_type('name', str)
+    data = create_property_check_type('data', requires_shape=True)
+    units = create_property_check_type('units', str)
+    reference = create_property_check_isinstance('reference', Instrument)
 
 
 class Data:
     def __init__(self,
             signal_name: str = None,
-            signal_data = None,
+            signal_data: Any = None,
             signal_units: str = None,
             axes: List[Axis] = None
         ):
@@ -36,8 +34,8 @@ class Data:
         self.axes = axes
     
     # Getters and setters
-    signal_name = create_typed_property('signal_name', str)
-    signal_data = create_typed_property('signal', requires_shape=True)
-    signal_units = create_typed_property('signal_units', str)
-    axes = create_typed_property_for_list('axes', Axis)
+    signal_name = create_property_check_type('signal_name', str)
+    signal_data = create_property_check_type('signal', requires_shape=True)
+    signal_units = create_property_check_type('signal_units', str)
+    axes = create_property_check_type_for_lists('axes', Axis)
     # an integrity check that assures that the axis and the data are compatible is performed when the nexus file is created using saveNexus

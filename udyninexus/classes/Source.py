@@ -1,5 +1,5 @@
 from .Instrument import Instrument
-from ..utils import create_typed_property, create_valued_property
+from ..utils import create_property_check_type, create_property_check_in_valid_values
 
 from typing import Literal
 
@@ -17,7 +17,7 @@ class Source(Instrument):
         
     
     # Getters and setters
-    type = create_valued_property('type', ['Synchrotron X-ray Source', 'Rotating Anode X-ray', 'Fixed Tube X-ray',
+    type = create_property_check_in_valid_values('type', ['Synchrotron X-ray Source', 'Rotating Anode X-ray', 'Fixed Tube X-ray',
                                         'UV Laser', 'Optical Laser', 'Laser', 'Dye-Laser', 'Broadband Tunable Light Source',
                                         'Halogen lamp', 'LED', 'Mercury Cadmium Telluride', 'Deuterium Lamp', 
                                         'Xenon Lamp', 'Globar'])
