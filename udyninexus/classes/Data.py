@@ -27,16 +27,19 @@ class Data:
             signal_name: str = None,
             signal_data: Any = None,
             signal_units: str = None,
+            signal_reference: Instrument = None,
             axes: List[Axis] = None
         ):
         self.signal_name = signal_name
         self.signal_data = signal_data
         self.signal_units = signal_units
+        self.signal_reference = signal_reference
         self.axes = axes
     
     # Getters and setters
     signal_name = create_property_check_type('signal_name', str)
     signal_data = create_property_check_type('signal', requires_shape=True)
     signal_units = create_property_check_type('signal_units', str)
+    signal_reference = create_property_check_isinstance('signal_reference', Instrument)
     axes = create_property_check_type_for_lists('axes', Axis)
     # an integrity check that assures that the axis and the data are compatible is performed when the nexus file is created using saveNexus
