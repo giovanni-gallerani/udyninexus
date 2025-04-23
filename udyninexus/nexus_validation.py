@@ -4,6 +4,7 @@ from .classes.Detector import Detector
 from .classes.Source import Source
 from .classes.Sample import Sample
 from .classes.Data import Axis, Data
+from .utils import get_shape
 
 
 def _get_invalid_none_attributes(instance_name: str, instance, allowed_none: set) -> list[str]:
@@ -52,6 +53,20 @@ def _get_invalid_type_and_invalid_none_attributes_of_list_elements_(list_name: s
     return errors
 
 
+def _get_axes_with_invalid_dimensions(axes):
+    """
+    Check if all the Axis are one dimensional arrays, numpy array or ranges.
+
+    Returns:
+        If all the axis are valid returns an empty string, otherwise return a list with all the invalid axes.
+    """
+    errors = []
+    for i, axis in enumerate(axes):
+        if type(axis) == Axis and len(get_shape(axis.data)) != 1:
+            errors.append(f"NexusContainer.data.axis.[{i}].data is not a one dimensional axis.")
+    return errors
+
+
 def errors_in_nexus_container(nexus_container: NexusContainer) -> list[str]:
     """
     Check if NexusContainer can be saved without errors using write_nexus.
@@ -84,7 +99,7 @@ def errors_in_nexus_container(nexus_container: NexusContainer) -> list[str]:
 
     # AXES
     errors.extend(_get_invalid_type_and_invalid_none_attributes_of_list_elements_('NexusContainer.data.axis', nexus_container.data.axes, Axis, {'data', 'units', 'reference'}))
-
+    errors.extend(_get_axes_with_invalid_dimensions(nexus_container.data.axes))
     # TODO validate shape in data confronting signal and axes
 
     return errors
