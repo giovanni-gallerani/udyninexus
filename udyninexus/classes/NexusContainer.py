@@ -1,4 +1,4 @@
-from ..utils import create_typed_property, create_typed_property_for_list, get_time_now
+from ..utils import create_typed_property, create_valued_property, create_typed_property_for_list, get_time_now
 from .Beam import Beam
 from .Detector import Detector
 from .Source import Source
@@ -6,24 +6,17 @@ from .Sample import Sample
 from .Data import Data
 
 
-from typing import Optional, List
+from typing import List, Literal
 from datetime import datetime
 
 
-# TODO specify with Optional which elements are actually optional
-
-
 class NexusContainer:
-    # Class attributes (shared across all istances)
-    __definition = 'NXoptical_spectroscopy'
-    __definition_URL = 'https://fairmat-nfdi.github.io/nexus_definitions/classes/contributed_definitions/NXoptical_spectroscopy.html#nxoptical-spectroscopy'
-    __definition_version = '1.0'
-    __experiment_type='transmission spectroscopy' # can be 'photoluminescence', 'transmission spectroscopy', 'reflection spectroscopy'
-    __experiment_sub_type='pump-probe' # can be 'time resolved', 'imaging', 'pump-probe'
 
     def __init__(self, 
             title: str = None,
             identifier_experiment: int = None,
+            experiment_type: Literal['photoluminescence', 'transmission spectroscopy', 'reflection spectroscopy'] = None,
+            experiment_sub_type: Literal['time resolved', 'imaging', 'pump-probe'] = None,
             experiment_description: str = None,
             beams: List[Beam] = None,
             detectors: List[Detector] = None,
@@ -40,6 +33,8 @@ class NexusContainer:
         self.end_time = end_time
         self.identifier_experiment = identifier_experiment
         self.experiment_description = experiment_description
+        self.experiment_type = experiment_type
+        self.experiment_sub_type = experiment_sub_type
         self.beams = beams
         self.detectors = detectors
         self.sources = sources
@@ -53,6 +48,8 @@ class NexusContainer:
     end_time = create_typed_property('end_time', datetime)
     identifier_experiment = create_typed_property('identifier_experiment', int)
     experiment_description = create_typed_property('experiment_description', str)
+    experiment_type = create_valued_property('experiment_type', ['photoluminescence', 'transmission spectroscopy', 'reflection spectroscopy'])
+    experiment_sub_type = create_valued_property('experiment_sub_type', ['time resolved', 'imaging', 'pump-probe'])
     beams = create_typed_property_for_list('beams', Beam)
     detectors = create_typed_property_for_list('detectors', Detector)
     sources = create_typed_property_for_list('sources', Source)
