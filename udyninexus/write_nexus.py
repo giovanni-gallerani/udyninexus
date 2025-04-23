@@ -3,7 +3,7 @@
 # - Create methods for editing definition in NexusDataContainer, for now it's hardcoded since the lab will only use an implementation of NXoptical_spectroscopy
 
 from .classes.NexusContainer import NexusContainer
-from .nexus_validation import validate_nexus_container
+from .nexus_validation import errors_in_nexus_container
 from .logging_settings import logger
 from .exceptions import NexusValidationError, NexusSaveError
 
@@ -21,9 +21,16 @@ def write_nexus(nexus_container: NexusContainer, filename: str):
         NexusSaveError: throwed when occours an error while trying to save the NeXus file.
     '''
 
-    if not validate_nexus_container(nexus_container):
-        raise NexusValidationError('Invalid NexusContainer, the NeXus file NeXus file cannot be created')
-
+    logger.info("Starting validation of NexusContainer...")
+    errors = errors_in_nexus_container(nexus_container)
+    if  errors != []:
+        logger.error("Validation failed.")
+        joined_errors = '\n'.join(errors)
+        raise NexusValidationError(
+            f"Invalid NexusContainer, the NeXus file cannot be created:\n{joined_errors}"
+        )
+    logger.info("Validation successful.")
+    
     root = NXroot()
 
     # ENTRY
@@ -36,8 +43,8 @@ def write_nexus(nexus_container: NexusContainer, filename: str):
     root['/entry/end_time'] = NXfield(nexus_container.end_time.isoformat())
     root['/entry/identifier_experiment'] = NXfield(nexus_container.identifier_experiment)
     root['/entry/experiment_description'] = NXfield(nexus_container.experiment_description)
-    root['/entry/experiment_type'] = NXfield('transmission spectroscopy')
-    root['/entry/experiment_sub_type'] = NXfield('pump-probe')
+    root['/entry/experiment_type'] = NXfield(nexus_container.experiment_type)
+    root['/entry/experiment_sub_type'] = NXfield(nexus_container.experiment_sub_type)
 
     # INSTRUMENT
     root['/entry/instrument'] = NXinstrument()
@@ -86,14 +93,20 @@ def write_nexus(nexus_container: NexusContainer, filename: str):
 
 
     filename_full_path = Path(filename).resolve()
+    logger.info(f"Creating necessary directories for saving {filename_full_path}...")
     directories = filename_full_path.parent
     try:
         directories.mkdir(parents=True, exist_ok=True)
     except (PermissionError, FileExistsError, OSError, Exception) as e:
+        logger.error(f"Failed to create directory '{directories}': {e}")
         raise NexusSaveError(f"Failed to create directory '{directories}': {e}") from e
-    
-    # Save the NeXus file
+    logger.info(f"Created necessary directories for saving {filename_full_path}")
+
+
+    logger.info(f"Saving Nexus file to {filename_full_path}...")
     try:
         root.save(filename_full_path)
     except NeXusError as e:
+        logger.error(f"Failed to save NeXus file at {filename_full_path}: {e}")
         raise NexusSaveError(e) from e
+    logger.info(f"File saved to {filename_full_path}")
