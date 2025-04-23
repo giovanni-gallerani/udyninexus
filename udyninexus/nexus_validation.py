@@ -5,6 +5,7 @@ from .classes.Source import Source
 from .classes.Sample import Sample
 from .classes.Data import Axis, Data
 from .utils import get_shape
+from .logging_settings import logger
 
 
 def _get_invalid_none_attributes(instance_name: str, instance, allowed_none: set) -> list[str]:
@@ -47,23 +48,47 @@ def _get_invalid_type_and_invalid_none_attributes_of_list_elements_(list_name: s
     errors = []
     for i, element in enumerate(elements):
         if type(element) is not expected_type:
-            errors.append(f"{list_name}[{i}] is not of type {expected_type.__name__}")
+            errors.append(f"{list_name}[{i}] is not of type {expected_type.__name__}.")
         else:
             errors.extend(_get_invalid_none_attributes(f"{list_name}[{i}]", element, allowed_none))
     return errors
 
 
-def _get_axes_with_invalid_dimensions(axes):
+def _get_invalid_axes_data_relation_and_fill_axes_data(data: Data):
     """
+    Chack if there are enought axes for data.
     Check if all the Axis are one dimensional arrays, numpy array or ranges.
-
+    If an axis has data = None assign to data a value based on the signal dimensions.
+    If an axis has data not None check if it's coherent with the signal dimensions.
+ 
     Returns:
-        If all the axis are valid returns an empty string, otherwise return a list with all the invalid axes.
+        If all the axis are valid returns an empty string, otherwise return a list with all the validation errors founded.
     """
     errors = []
-    for i, axis in enumerate(axes):
-        if type(axis) == Axis and len(get_shape(axis.data)) != 1:
-            errors.append(f"NexusContainer.data.axis.[{i}].data is not a one dimensional axis.")
+    signal_shape = get_shape(data.signal_data)
+    if len(signal_shape) != len(data.axes):
+        errors.append(f"NexusContainer.data.signal requires {len(signal_shape)} axes but only {len(data.axes)} elements are present in NexusContainer.data.axes.")
+    else:
+        for i, axis in enumerate(data.axes):
+            if type(axis) == Axis: # no need to append to errors if axis is not an Axis since it is done by the previous function
+            
+                if axis.data is None: # if axis data is not specified use the shape of the signal to deduct it
+                    axis.data = range(signal_shape[i])
+                    logger.info(f'Changed NexusContainer.data.axis.[{i}].data to {range(signal_shape[i])}.')
+                
+                else:
+                    axis_shape = get_shape(axis.data)
+                    if len(axis_shape) == 1: # if the axis is valid (is a one dimensional array) check if the shape fits the data
+                        if axis_shape[0] != signal_shape[i]:
+                            errors.append(f"NexusContainer.data.axis.[{i}].data has shape {axis_shape} but should have shape ({signal_shape[i]},).")
+                    else:
+                        errors.append(f"NexusContainer.data.axis.[{i}].data is not a one dimensional axis.")
+                        
+
+                if axis.units is None: # if the axis does not have units is an index
+                    axis.units = 'index'
+                    logger.info(f'Changed NexusContainer.data.axis.[{i}].units to index.')
+    
     return errors
 
 
@@ -99,7 +124,6 @@ def errors_in_nexus_container(nexus_container: NexusContainer) -> list[str]:
 
     # AXES
     errors.extend(_get_invalid_type_and_invalid_none_attributes_of_list_elements_('NexusContainer.data.axis', nexus_container.data.axes, Axis, {'data', 'units', 'reference'}))
-    errors.extend(_get_axes_with_invalid_dimensions(nexus_container.data.axes))
-    # TODO validate shape in data confronting signal and axes
+    errors.extend(_get_invalid_axes_data_relation_and_fill_axes_data(nexus_container.data))
 
     return errors
