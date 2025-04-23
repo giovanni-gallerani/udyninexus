@@ -71,6 +71,8 @@ if __name__ == '__main__':
     nexusObj = udyninexus.NexusContainer(
         title = 'My title', 
         identifier_experiment = identifier_experiment,
+        experiment_type='transmission spectroscopy',
+        experiment_sub_type='pump-probe',
         experiment_description = 'My description',
         beams=[beam0, beam1],
         detectors=[detector0],
