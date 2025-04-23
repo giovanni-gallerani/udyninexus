@@ -27,6 +27,12 @@ def get_shape(obj):
         raise TypeError(f"Object of type {type(obj).__name__} does not have a valid shape.")
 
 
+def check_if_one_dimensional_axis_data(variable_name, value):
+    check_if_requires_shape(variable_name, value)
+    if len(get_shape(value)) != 1:
+        raise ValueError(f'Invalid value for axis. Must be one dimensional')
+    
+
 def check_if_expected_instance(variable_name, value, expected_instance):
     if not isinstance(value, expected_instance):
         raise TypeError(f'Invalid type for {variable_name}: {value}. Must be an instance of {expected_instance.__name__}.')
@@ -54,6 +60,33 @@ def check_if_requires_shape(variable_name, value):
 def check_if_in_valid_values(variable_name, value, list_of_valid_values):
     if value not in list_of_valid_values:
         raise ValueError(f'Invalid value for {variable_name}: {value}. Expected one of the following: {list_of_valid_values}.')
+
+
+
+def create_property_check_one_dimensional_axis_data(attribute_name: str):
+    """
+    Creates a property with a getter and a setter that validates if the data is a one dimensional axis.
+    Note that the generated setters always accept None values.
+
+    Args:
+        attribute_name (str): The attribute name.
+        expected_type (type): The expected type of the attribute. If not specified allows for every type.
+        requires_shape (bool): If true it's required for the attribute to be array-like object (e.g., list, tuple, NumPy array) with a shape.
+
+    Returns:
+        property: A property object with type validation.
+    """
+    private_name = f'__{attribute_name}'
+
+    def getter(self):
+        return getattr(self, private_name, None)  # returns None if the attribute is not set
+
+    def setter(self, value):
+        if value is not None:
+            check_if_one_dimensional_axis_data(attribute_name, value)
+        setattr(self, private_name, deepcopy(value))
+
+    return property(getter, setter)
 
 
 def create_property_check_isinstance(attribute_name: str, expected_class: type):

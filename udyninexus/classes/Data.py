@@ -1,4 +1,4 @@
-from ..utils import create_property_check_isinstance, create_property_check_type, create_property_check_type_for_lists
+from ..utils import create_property_check_one_dimensional_axis_data, create_property_check_isinstance, create_property_check_type, create_property_check_type_for_lists
 from .Instrument import Instrument
 from typing import Optional, List, Any
 
@@ -17,7 +17,7 @@ class Axis:
 
     # Getters and setters
     name = create_property_check_type('name', str)
-    data = create_property_check_type('data', requires_shape=True)
+    data = create_property_check_one_dimensional_axis_data('data')
     units = create_property_check_type('units', str)
     reference = create_property_check_isinstance('reference', Instrument)
 
