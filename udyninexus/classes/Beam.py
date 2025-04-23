@@ -1,12 +1,11 @@
+from .Instrument import Instrument
 from ..utils import create_typed_property, create_valued_property
 from .Source import Source
 
-
 from typing import Optional, Literal
 
-# TODO specify with Optional which elements are actually optional
 
-class Beam:
+class Beam(Instrument):
     def __init__(self,
             name_in_nexus: str = None,
             beam_type: Literal['pump', 'probe'] = None,
@@ -17,7 +16,7 @@ class Beam:
             beam_polarization_type: Literal['linear', 'circular' ,'elliptically', 'unpolarized'] = None,
             associated_source: Source = None
         ):
-        self.name_in_nexus = name_in_nexus
+        super().__init__(name_in_nexus)
         self.parameter_reliability = parameter_reliability
         self.incident_wavelength = incident_wavelength
         self.incident_wavelength_units = incident_wavelength_units
@@ -28,7 +27,6 @@ class Beam:
         
     
     # Getters and setters
-    name_in_nexus = create_typed_property('name_in_nexus', str)
     parameter_reliability = create_valued_property('parameter_reliability', ['measured', 'nominal'])
     incident_wavelength = create_typed_property('incident_wavelength', int)
     incident_wavelength_units = create_valued_property('incident_wavelength_units', ['nm']) # TODO decide what units are possible
