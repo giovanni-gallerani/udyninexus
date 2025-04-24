@@ -6,3 +6,4 @@ from .classes.Sample import Sample
 from .classes.Data import Axis, Data
 from .write_nexus import write_nexus
 from .exceptions import NexusSaveError, NexusValidationError
+from .logging_settings import set_log_level
