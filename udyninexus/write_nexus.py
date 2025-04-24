@@ -3,12 +3,31 @@
 # - Create methods for editing definition in NexusDataContainer, for now it's hardcoded since the lab will only use an implementation of NXoptical_spectroscopy
 
 from .classes.NexusContainer import NexusContainer
+from .classes.Instrument import Instrument
+from .classes.Source import Source
+from .classes.Beam import Beam
+from .classes.Data import Axis
+from .classes.Detector import Detector
 from .nexus_validation import errors_in_nexus_container
 from .logging_settings import logger
 from .exceptions import NexusValidationError, NexusSaveError
 
 from nexusformat.nexus import *
 from pathlib import Path
+
+
+def _obtain_reference(data_name: str, related_instrument: Instrument):
+    '''Givne the name of a data and the instrument that generated it, return the path the data should be saved into'''
+    related_instrument_type = type(related_instrument)
+    
+    if related_instrument_type == Source:
+        prefix = 'source_'
+    elif related_instrument_type == Beam:
+        prefix = 'beam_'
+    elif related_instrument_type == Detector:
+        prefix = 'detector_'
+    
+    return f'/entry/instrument/{prefix}{related_instrument.name_in_nexus}/{data_name}'
 
 
 def write_nexus(nexus_container: NexusContainer, filename: str):
@@ -31,6 +50,7 @@ def write_nexus(nexus_container: NexusContainer, filename: str):
         )
     logger.info("Validation successful.")
     
+    logger.info("Starting creation of NeXus file from NexusContainer...")
     root = NXroot()
 
     # ENTRY
@@ -83,13 +103,26 @@ def write_nexus(nexus_container: NexusContainer, filename: str):
         units=nexus_container.data.signal_units, 
         long_name=f'{nexus_container.data.signal_name} ({nexus_container.data.signal_units})'
     )
+    signal_reference = _obtain_reference(nexus_container.data.signal_name, nexus_container.data.signal_related_instrument)
+    root[signal_reference] = signal
+
+
     axes = []
     for axis in nexus_container.data.axes:
-        axes.append(NXfield(axis.data, name=axis.name, units=axis.units, long_name=f'{axis.name} ({axis.units})'))
+        if axis.related_instrument is None: # if no related instrument is specified save the axis in data
+            axes.append(NXfield(axis.data, name=axis.name, units=axis.units, long_name=f'{axis.name} ({axis.units})'))
+        else: # otherwise save the axis in the instrument and use a NXlink
+            reference = _obtain_reference(axis.name, axis.related_instrument)
+            root[reference] = NXfield(axis.data, name=axis.name, units=axis.units, long_name=f'{axis.name} ({axis.units})')
+            axes.append(NXlink(reference))
+
     # creating NXdata in this way is useful because the attributes signal and axes gets assigned as part of the creation of NXdata
-    root['/entry/data'] = NXdata(signal, tuple(axes))
+    root['/entry/data'] = NXdata(NXlink(signal_reference), tuple(axes))
 
     root['/entry/data'].set_default()
+
+
+    logger.info("NeXus file created")
 
 
     filename_full_path = Path(filename).resolve()
