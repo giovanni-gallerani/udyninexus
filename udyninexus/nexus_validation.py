@@ -120,10 +120,10 @@ def errors_in_nexus_container(nexus_container: NexusContainer) -> list[str]:
     errors.extend(_get_invalid_none_attributes('NexusContainer.sample', nexus_container.sample, {}))
 
     # DATA
-    errors.extend(_get_invalid_none_attributes('NexusContainer.data', nexus_container.data, {})) # note that signal reference cannot be None
+    errors.extend(_get_invalid_none_attributes('NexusContainer.data', nexus_container.data, {})) # note that signal_related_instrument cannot be None
 
     # AXES
-    errors.extend(_get_invalid_type_and_invalid_none_attributes_of_list_elements_('NexusContainer.data.axis', nexus_container.data.axes, Axis, {'data', 'units', 'reference'}))
+    errors.extend(_get_invalid_type_and_invalid_none_attributes_of_list_elements_('NexusContainer.data.axis', nexus_container.data.axes, Axis, {'data', 'units', 'related_instrument'}))
     errors.extend(_get_invalid_axes_data_relation_and_fill_axes_data(nexus_container.data))
 
     return errors
