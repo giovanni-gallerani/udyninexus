@@ -50,7 +50,7 @@ def write_nexus(nexus_container: NexusContainer, filename: str):
         )
     logger.info("Validation successful.")
     
-    logger.info("Starting creation of NeXus file from NexusContainer...")
+    logger.info("Starting creation of NeXus file in memory from NexusContainer...")
     root = NXroot()
 
     # ENTRY
@@ -122,7 +122,7 @@ def write_nexus(nexus_container: NexusContainer, filename: str):
     root['/entry/data'].set_default()
 
 
-    logger.info("NeXus file created")
+    logger.info("NeXus file ready to be saved.")
 
 
     filename_full_path = Path(filename).resolve()
@@ -131,15 +131,15 @@ def write_nexus(nexus_container: NexusContainer, filename: str):
     try:
         directories.mkdir(parents=True, exist_ok=True)
     except (PermissionError, FileExistsError, OSError, Exception) as e:
-        logger.error(f"Failed to create directory '{directories}': {e}")
-        raise NexusSaveError(f"Failed to create directory '{directories}': {e}") from e
-    logger.info(f"Created necessary directories for saving {filename_full_path}")
+        logger.error(f"Failed to create directory '{directories}': {e}.")
+        raise NexusSaveError(f"Failed to create directory '{directories}': {e}.") from e
+    logger.info(f"Created necessary directories for saving {filename_full_path}.")
 
 
     logger.info(f"Saving Nexus file to {filename_full_path}...")
     try:
         root.save(filename_full_path)
     except NeXusError as e:
-        logger.error(f"Failed to save NeXus file at {filename_full_path}: {e}")
+        logger.error(f"Failed to save NeXus file at {filename_full_path}: {e}.")
         raise NexusSaveError(e) from e
-    logger.info(f"File saved to {filename_full_path}")
+    logger.info(f"File saved to {filename_full_path}.")

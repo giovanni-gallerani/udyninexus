@@ -74,7 +74,7 @@ def _get_invalid_axes_data_relation_and_fill_axes_data(data: Data):
             
                 if axis.data is None: # if axis data is not specified use the shape of the signal to deduct it
                     axis.data = range(signal_shape[i])
-                    logger.info(f'Changed NexusContainer.data.axis.[{i}].data to {range(signal_shape[i])}.')
+                    logger.info(f'Setted NexusContainer.data.axis.[{i}].data to {range(signal_shape[i])}.')
                 
                 else:
                     axis_shape = get_shape(axis.data)
@@ -87,7 +87,7 @@ def _get_invalid_axes_data_relation_and_fill_axes_data(data: Data):
 
                 if axis.units is None: # if the axis does not have units is an index
                     axis.units = 'index'
-                    logger.info(f'Changed NexusContainer.data.axis.[{i}].units to index.')
+                    logger.info(f'Setted NexusContainer.data.axis.[{i}].units to index.')
     
     return errors
 
