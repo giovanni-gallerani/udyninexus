@@ -1,7 +1,7 @@
 # udyninexus
 
 ## 1. Introduction
-**udyninexus** is Python package for easy NeXus files creation made for [UDynI laboratory](https://www.udyni.eu/).  
+**udyninexus** is Python package for easy NeXus files creation made for the [UDynI research group](https://www.udyni.eu/).  
 
 This package makes the user able to create [NeXus files](https://www.nexusformat.org/) without the need to know how they are structured internally by using a simple class system instead of neeeding to learn the tree structure requred by the standard.  
 In short this package provide a level of abstraction on the NeXus file implementation, enabling researcher to develop custom made acquisition scripts for different experimental station in a simpler way.
