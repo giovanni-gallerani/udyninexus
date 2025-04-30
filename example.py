@@ -4,9 +4,9 @@ from pathlib import Path
 import numpy as np
 
 # IMPORTANT NOTES
-# 1) In order to give maximum flexibily is possible to not assign values to all the field from the start
+# 1) In order to give maximum flexibily is possible to not assign values to all the fields from the start
 # but at nexus time creation all the required fields must have a value assigned to them.
-# 2) This demo does not represent an actual experiment, is a way of showing the capabilities of the udyninexus package
+# 2) This demo does not represent an actual experiment, it is a way of showing the capabilities of the udyninexus package.
 
 if __name__ == '__main__':
 
@@ -65,10 +65,10 @@ if __name__ == '__main__':
 
 
     # --- SAMPLE ---
-    # in production environment the id of the sample is obtained by selectin one of the sample available for the experiment
-    # in order to obatin the samples for the experiment a specific API is used, find more at https://github.com/giovanni-gallerani/UdyniManagement
+    # in production environment the id of the sample is obtained by selecting one of the sample available for the experiment
+    # in order to obtain the samples for the experiment a specific API is used, find more at https://github.com/giovanni-gallerani/UdyniManagement
     sample = udyninexus.Sample(
-        name='UdynI test sample',
+        name='UDynI test sample',
         sample_id=709 
     )
 
@@ -90,17 +90,17 @@ if __name__ == '__main__':
     # --- CREATE THE AXES ---
     delay_time = udyninexus.Axis(
         name='delay_time',
-        data=range(9),  # data does not have to be always specified, if not specified is deducted by the shape of signal_data.
+        data=range(9),  # data does not have to be always specified, if not specified is deducted by the shape of signal_data during validation when writing the NeXus file.
         units='ms',  # if units are not specified, they are automatically filled with value 'index' during validation, indicating that the axis has no units.
     )
 
-    # For the second axis the instrument that alters it is specified, so this axis will be saved in the related_instrument group and accessed with NXlink
+    # For the second axis the instrument that alters it is specified, so this axis will be saved in the related_instrument group and accessed in data with a NXlink
     wavelength = udyninexus.Axis('wavelength', range(2068), 'nm', related_instrument=beam_pump)
 
     number_of_measurements = udyninexus.Axis(
         name='number_of_measurements',
         # note that there is no data, it will be calculated automatically from the signal
-        # note that here there is no units of measurement, it will be put to 'index'
+        # note that there is no units of measurement, it will be put to 'index' during validation when writing the NeXus file.
     )
 
 
@@ -122,13 +122,13 @@ if __name__ == '__main__':
         signal_name='delta_i',
         signal_data=delta_i,
         signal_units='mOD',
-        signal_related_instrument=detector_photodiode, # what instrument acquired the data
+        signal_related_instrument=detector_photodiode, # instrument that acquired the data
         axes=[delay_time, wavelength, number_of_measurements] # note that the order of the axis is significant, an arbitrary number of axis can be added
     )
     nexusObj.data = data  # save data in NexusContainer
     
 
-    filename = Path('output_example/Udiny_test_file_generated.nxs').resolve()
+    filename = Path('output_example/UDynI_test_file_generated.nxs').resolve()
     try:
         udyninexus.write_nexus(nexusObj, filename)
     except (udyninexus.NexusValidationError, udyninexus.NexusSaveError) as e:
