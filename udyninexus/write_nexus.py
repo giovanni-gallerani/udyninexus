@@ -61,7 +61,7 @@ def write_nexus(nexus_container: NexusContainer, filename: str):
     root['/entry/title'] = NXfield(nexus_container.title)
     root['/entry/start_time'] = NXfield(nexus_container.start_time.isoformat())
     root['/entry/end_time'] = NXfield(nexus_container.end_time.isoformat())
-    root['/entry/identifier_experiment'] = NXfield(nexus_container.identifier_experiment)
+    root['/entry/identifier_experiment'] = NXfield(str(nexus_container.identifier_experiment)) # str because it needs to be NX_CHAR
     root['/entry/experiment_description'] = NXfield(nexus_container.experiment_description)
     root['/entry/experiment_type'] = NXfield(nexus_container.experiment_type)
     root['/entry/experiment_sub_type'] = NXfield(nexus_container.experiment_sub_type)
@@ -94,7 +94,7 @@ def write_nexus(nexus_container: NexusContainer, filename: str):
     # SAMPLE
     root['/entry/sample'] = NXsample()
     root['/entry/sample/name'] = NXfield(nexus_container.sample.name)
-    root['/entry/sample/sample_id'] = NXfield(nexus_container.sample.sample_id)
+    root['/entry/sample/sample_id'] = NXfield(str(nexus_container.sample.sample_id)) # str because it needs to be NX_CHAR
 
     # DATA
     signal = NXfield(
@@ -117,8 +117,9 @@ def write_nexus(nexus_container: NexusContainer, filename: str):
             axes.append(NXlink(reference))
 
     # creating NXdata in this way is useful because the attributes signal and axes gets assigned as part of the creation of NXdata
-    root['/entry/data'] = NXdata(NXlink(signal_reference), tuple(axes))
-
+    root['/entry/data'] = NXdata(signal=NXlink(signal_reference), axes=tuple(axes))
+    root['/entry/data'].attrs['reference'] = signal_reference
+    
     root['/entry/data'].set_default()
 
 

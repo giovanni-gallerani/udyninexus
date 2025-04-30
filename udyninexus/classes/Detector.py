@@ -9,7 +9,7 @@ class Detector(Instrument):
             name_in_nexus: str = None,
             detector_channel_type : Literal['single-channel', 'multichannel'] = None,
             detector_type: Literal['CCD', 'photomultiplier', 'photodiode', 'avalanche-photodiode', 'streak camera', 'bolometer',
-                                    'golay detectors', 'pyroelectric detector', 'deuterated triglycine sulphate', 'other'] = None
+                                    'golay detectors', 'pyroelectric detector', 'deuterated triglycine sulphate'] = None
         ):
         super().__init__(name_in_nexus)
         self.detector_channel_type = detector_channel_type
@@ -19,5 +19,5 @@ class Detector(Instrument):
     # Getters and setters
     detector_channel_type = create_property_check_in_valid_values('detector_channel_type', ['single-channel', 'multichannel'])
     detector_type = create_property_check_in_valid_values('detector_type', ['CCD', 'photomultiplier', 'photodiode', 'avalanche-photodiode', 'streak camera', 'bolometer',
-                                                            'golay detectors', 'pyroelectric detector', 'deuterated triglycine sulphate', 'other'])
+                                                            'golay detectors', 'pyroelectric detector', 'deuterated triglycine sulphate'])
     
