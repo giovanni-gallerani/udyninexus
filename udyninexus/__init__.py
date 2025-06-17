@@ -1,9 +1,9 @@
-from .classes.NexusContainer import NexusContainer
-from .classes.Beam import Beam
-from .classes.Detector import Detector
-from .classes.Source import Source
-from .classes.Sample import Sample
-from .classes.Data import Axis, Data
-from .write_nexus import write_nexus
-from .exceptions import NexusSaveError, NexusValidationError
-from .logging_settings import set_log_level, set_log_file
+from udyninexus.classes.NexusContainer import NexusContainer
+from udyninexus.classes.Beam import Beam
+from udyninexus.classes.Detector import Detector
+from udyninexus.classes.Source import Source
+from udyninexus.classes.Sample import Sample
+from udyninexus.classes.Data import Axis, Data
+from udyninexus.write_nexus import write_nexus
+from udyninexus.exceptions import NexusSaveError, NexusValidationError
+from udyninexus.logging_settings import set_log_level, set_log_file

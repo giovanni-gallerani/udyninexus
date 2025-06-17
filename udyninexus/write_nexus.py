@@ -2,22 +2,22 @@
 # - Add parameters for specifying compression
 # - Create methods for editing definition in NexusDataContainer, for now it's hardcoded since the lab will only use an implementation of NXoptical_spectroscopy
 
-from .classes.NexusContainer import NexusContainer
-from .classes.Instrument import Instrument
-from .classes.Source import Source
-from .classes.Beam import Beam
-from .classes.Data import Axis
-from .classes.Detector import Detector
-from .nexus_validation import errors_in_nexus_container
-from .logging_settings import logger
-from .exceptions import NexusValidationError, NexusSaveError
+from udyninexus.classes.NexusContainer import NexusContainer
+from udyninexus.classes.Instrument import Instrument
+from udyninexus.classes.Source import Source
+from udyninexus.classes.Beam import Beam
+from udyninexus.classes.Data import Axis
+from udyninexus.classes.Detector import Detector
+from udyninexus.nexus_validation import errors_in_nexus_container
+from udyninexus.logging_settings import logger
+from udyninexus.exceptions import NexusValidationError, NexusSaveError
 
 from nexusformat.nexus import *
 from pathlib import Path
 
 
 def _obtain_reference(data_name: str, related_instrument: Instrument):
-    '''Givne the name of a data and the instrument that generated it, return the path the data should be saved into'''
+    '''Give the name of a data and the instrument that generated it, return the path the data should be saved into'''
     related_instrument_type = type(related_instrument)
     
     if related_instrument_type == Source:

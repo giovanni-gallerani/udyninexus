@@ -1,11 +1,11 @@
-from .classes.NexusContainer import NexusContainer
-from .classes.Beam import Beam
-from .classes.Detector import Detector
-from .classes.Source import Source
-from .classes.Sample import Sample
-from .classes.Data import Axis, Data
-from .utils import get_shape
-from .logging_settings import logger
+from udyninexus.classes.NexusContainer import NexusContainer
+from udyninexus.classes.Beam import Beam
+from udyninexus.classes.Detector import Detector
+from udyninexus.classes.Source import Source
+from udyninexus.classes.Sample import Sample
+from udyninexus.classes.Data import Axis, Data
+from udyninexus.utils import get_shape
+from udyninexus.logging_settings import logger
 
 
 def _get_invalid_none_attributes(instance_name: str, instance, allowed_none: set) -> list[str]:
