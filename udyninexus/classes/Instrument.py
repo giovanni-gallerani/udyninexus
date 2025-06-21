@@ -1,6 +1,13 @@
-from ..utils import create_property_check_type
+from udyninexus.utils import create_property_check_type
+
 
 class Instrument:
+    """
+    Base class for an istrument used in spectroscopy experiments, all the instrument inherit from this class.
+
+    Attributes:
+        name_in_nexus (str): Identifier used in the NeXus file. The specific instrument will be saved inside the 'instrument' group under the name '\<type_of_instrument_instance\>\_\<name_in_nexus\>'.
+    """
     def __init__(self, 
             name_in_nexus: str = None
         ):

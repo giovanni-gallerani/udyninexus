@@ -1,11 +1,24 @@
-from .Instrument import Instrument
-from ..utils import create_property_check_type, create_property_check_in_valid_values
-from .Source import Source
+from udyninexus.classes.Instrument import Instrument
+from udyninexus.classes.Source import Source
+from udyninexus.utils import create_property_check_type, create_property_check_in_valid_values
 
 from typing import Literal
 
 
 class Beam(Instrument):
+    """
+    Represents the characteristics of a beam used in spectroscopy experiments.
+
+    Attributes:
+        name_in_nexus (str): Identifier used in the NeXus file. The beam will be saved inside the 'instrument' group under the name 'beam\_\<name_in_nexus\>'.
+        beam_type (str): Specify the role of the beam ('pump' or 'probe').
+        parameter_reliability (str): Indicates how the beam characteristics were obtained ('measured', 'nominal').
+        incident_wavelength (int): Wavelength of the incident beam.
+        incident_wavelength_units (str): Units of the incident wavelength ('nm', 'um').
+        incident_polarization (int): Polarization value of the incident beam.
+        beam_polarization_type (str): Type of beam polarization ('linear', 'circular', 'elliptically', 'unpolarized').
+        associated_source (Source): Device that emitted the beam. In the NeXus file the path to the source will be specified in the 'associated_source' NXfield.
+    """
     def __init__(self,
             name_in_nexus: str = None,
             beam_type: Literal['pump', 'probe'] = None,

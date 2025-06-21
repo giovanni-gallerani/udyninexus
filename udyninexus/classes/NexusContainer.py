@@ -1,17 +1,32 @@
-from ..utils import create_property_check_type, create_property_check_in_valid_values, create_property_check_type_for_lists, get_time_now
-from .Beam import Beam
-from .Detector import Detector
-from .Source import Source
-from .Sample import Sample
-from .Data import Data
-
+from udyninexus.classes.Beam import Beam
+from udyninexus.classes.Detector import Detector
+from udyninexus.classes.Source import Source
+from udyninexus.classes.Sample import Sample
+from udyninexus.classes.Data import Data
+from udyninexus.utils import create_property_check_type, create_property_check_in_valid_values, create_property_check_type_for_lists, get_time_now
 
 from typing import List, Literal
 from datetime import datetime
 
 
 class NexusContainer:
+    """
+    Class used for storing all the data to write on the NeXus file.
 
+    Attributes:
+        title (str): Title of the experiment.
+        identifier_experiment (int): Identifier of the experiment used inside the laboratories (Experiment ID in LabLogbook).
+        experiment_type (str): Type of spectroscopy experiment ('photoluminescence', 'transmission spectroscopy', 'reflection spectroscopy').
+        experiment_sub_type (str): Specify the generic experiment type ('time resolved', 'imaging', 'pump-probe').
+        experiment_description (str): Free-text description of the experiment.
+        beams (List[Beam]): Beams used in the experiment.
+        detectors (List[Detector]): Detectors used in the experiment.
+        sources (List[Source]): Sources of the beams used in the experiment.
+        sample (Sample): Sample used in the experiment.
+        data (Data): Experimental data.
+        start_time (datetime): Start time of the experiment. It can be setted with the current time using set_start_time_now method.
+        end_time (datetime): Time of experiment end. It can be setted with the current time using set_end_time_now method.
+    """
     def __init__(self, 
             title: str = None,
             identifier_experiment: int = None,
